@@ -1,0 +1,38 @@
+server:
+  port: 6063
+
+spring:
+  application:
+    name: API-GATEWAY
+
+  cloud:
+      gateway:
+        discovery.locator:
+          enabled: true
+          lowerCaseServiceId: true
+        routes:
+          - id: welcome-mesg
+            uri: lb://WELCOME-MESG
+            predicates:
+              - Path=/msg
+          - id: greet-mesg
+            uri: lb://GREET-MESG
+            predicates:
+              - Path=/greet
+
+      compatibility-verifier:
+        enabled: false
+
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://localhost:6070/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
